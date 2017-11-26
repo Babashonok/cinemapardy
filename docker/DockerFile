@@ -1,0 +1,9 @@
+FROM java:8
+
+ENV SRC_DIR /opt/nuvola/apps/spring-boot
+
+RUN mkdir -p $SRC_DIR
+COPY cinemaPardy-0.0.1-SNAPSHOT.jar $SRC_DIR
+WORKDIR $SRC_DIR
+
+CMD ["java", "-Dspring.profiles.active=local,docker",  "-jar", "cinemaPardy-0.0.1-SNAPSHOT.jar"]

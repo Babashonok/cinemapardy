@@ -1,0 +1,14 @@
+FROM mysql:latest
+
+
+ENV SCRIPTS_DIR /sql
+
+COPY $SCRIPTS_DIR /
+COPY setup_db.sh /
+COPY setup.sh /
+COPY create_schemas.sql /
+COPY loadTestData.sql /
+
+RUN chmod +x /setup.sh
+
+ENTRYPOINT ["/bin/bash", "setup_db.sh"]
