@@ -20,7 +20,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath "gradle.plugin.com.chrisgahlert:gradle-dcompose-plugin:0.9.2"
+		classpath ("gradle.plugin.com.chrisgahlert:gradle-dcompose-plugin:0.9.2")
 	}
 }
 
@@ -48,11 +48,13 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.hibernate:hibernate-core:5.2.12.Final')
-	compile('org.codehaus.groovy:groovy')
+	compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.1.0'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.109'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.109'
+	compile group: 'io.searchbox', name: 'jest-common', version: '5.3.3'
+	compile group: 'io.searchbox', name: 'jest', version: '2.0.4'
 
 	runtime('mysql:mysql-connector-java')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
@@ -85,17 +87,32 @@ dcompose {
 		attachStdout = true
 		attachStderr = true
 	}
-	wiremock {
-		image = 'rodolpheche/wiremock:latest'
-		portBindings = ['9980:8080']
+
+	sqs {
+		portBindings = ['9600:9600']
+		baseDir = file('build/dockerfiles')
+		dockerFilename = 'Dockerfile-sqs'
 	}
+
+	sns {
+		baseDir = file('build/dockerfiles')
+		dockerFilename = 'Dockerfile-sns'
+		portBindings = ['9400:80']
+		links = [sqs.link()]
+	}
+
+	elasticsearch {
+		image = 'elasticsearch:5.1.2'
+		portBindings = ['9200:9200']
+		env = ['ES_JAVA_OPTS=-Xms128m -Xmx256m', 'ELASTICSEARCH_VERSION=5.1.2']
+		forceRemoveImage = true
+	}
+
 	cinemaPardy {
 		baseDir = file('build/dockerfiles')
 		dockerFilename = 'DockerFile'
 		exposedPorts = ['8082']
 		portBindings = ['8082:8082']
-		links = [mariadb.link()]
-		attachStdout = true
-		attachStderr = true
+		links = [mariadb.link(), sns.link('sns.us-east-1.amazonaws.com')]
 	}
 }

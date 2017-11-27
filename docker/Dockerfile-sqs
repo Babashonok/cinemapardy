@@ -1,0 +1,8 @@
+ FROM s12v/elasticmq:latest
+ MAINTAINER Thomson Reuters
+
+ EXPOSE 9600
+
+ COPY elasticmq.conf /etc/elasticmq/elasticmq.conf
+
+ CMD ["java", "-Djava.net.preferIPv4Stack=true", "-Dconfig.file=/etc/elasticmq/elasticmq.conf", "-jar", "elasticmq-server.jar"]

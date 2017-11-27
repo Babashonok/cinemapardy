@@ -1,0 +1,9 @@
+FROM s12v/sns:latest
+MAINTAINER Thomson Reuters
+
+ENV HTTP_PORT=80
+EXPOSE 80
+
+COPY db.json /etc/sns/db.json
+
+CMD ["java", "-jar", "/sns.jar"]

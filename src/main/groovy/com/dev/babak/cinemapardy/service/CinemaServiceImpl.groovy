@@ -1,6 +1,7 @@
 package com.dev.babak.cinemapardy.service
 
 import com.dev.babak.cinemapardy.domain.Cinema
+import com.dev.babak.cinemapardy.queue.service.SnsService
 import com.dev.babak.cinemapardy.repository.CinemaRepository
 import com.dev.babak.cinemapardy.view.CinemaView
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,9 @@ class CinemaServiceImpl implements  CinemaService{
 
     @Autowired
     CinemaViewService cinemaViewService
+
+    @Autowired
+    SnsService snsService
 
     @Override
     List<CinemaView> getAllCinemas() {
@@ -31,7 +35,8 @@ class CinemaServiceImpl implements  CinemaService{
     CinemaView uploadCinema(CinemaView cinemaView) {
         Cinema newCinema = cinemaViewService.convertJsonValueToDB(cinemaView)
         cinemaRepository.save(newCinema)
-        newCinema
+        snsService.pushNotification("new_cinema-docker", cinemaView)
+        cinemaView
     }
 
     @Override
@@ -39,7 +44,7 @@ class CinemaServiceImpl implements  CinemaService{
         Cinema updatedCinema = cinemaViewService.convertJsonValueToDB(cinemaView)
         updatedCinema.id = id
         cinemaRepository.save(updatedCinema)
-        updatedCinema
+        cinemaView
     }
 
     @Override
