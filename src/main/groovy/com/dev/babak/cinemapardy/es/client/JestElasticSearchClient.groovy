@@ -1,7 +1,6 @@
 package com.dev.babak.cinemapardy.es.client
 
-import com.tr.legal.projectx.common.mapper.ObjectMapper
-import com.tr.legal.projectx.elasticsearch.client.query.SearchQuery
+import com.dev.babak.cinemapardy.es.client.query.SearchQuery
 import groovy.util.logging.Slf4j
 import io.searchbox.action.Action
 import io.searchbox.action.BulkableAction
@@ -17,6 +16,7 @@ import io.searchbox.indices.aliases.AddAliasMapping
 import io.searchbox.indices.aliases.ModifyAliases
 import io.searchbox.indices.mapping.PutMapping
 import io.searchbox.indices.settings.UpdateSettings
+import org.elasticsearch.index.mapper.object.ObjectMapper
 
 import static java.lang.String.format
 import static java.lang.System.lineSeparator

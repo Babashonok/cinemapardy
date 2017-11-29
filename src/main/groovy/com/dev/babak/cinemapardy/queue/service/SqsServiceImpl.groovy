@@ -7,6 +7,7 @@
 package com.dev.babak.cinemapardy.queue.service
 
 import com.amazonaws.auth.AWSCredentialsProvider
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.sqs.AmazonSQS
@@ -20,14 +21,12 @@ import com.dev.babak.cinemapardy.queue.models.SqsMessage
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Service
 
 @Service
 class SqsServiceImpl implements SqsService {
-
-    @Autowired
-    AWSCredentialsProvider credentialsProvider
 
     @Autowired
     MessageBusFactory messageBusFactory
@@ -40,6 +39,9 @@ class SqsServiceImpl implements SqsService {
 
     @Autowired @Qualifier("queueName")
     String queueUrl
+
+    @Value('${docker.sqs.endpoint}')
+    private String endpoint
 
     private ObjectMapper mapper = new ObjectMapper()
 
@@ -139,6 +141,8 @@ class SqsServiceImpl implements SqsService {
     }
 
     AmazonSQS getAmazonSqsClient() {
-        return new AmazonSQSClient(credentialsProvider)
+        AmazonSQSClient client = new AmazonSQSClient(new DefaultAWSCredentialsProviderChain())
+        client.endpoint = endpoint
+        client
     }
 }

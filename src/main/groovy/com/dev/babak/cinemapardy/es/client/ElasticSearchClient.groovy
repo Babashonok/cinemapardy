@@ -1,5 +1,7 @@
 package com.dev.babak.cinemapardy.es.client
 
+import com.dev.babak.cinemapardy.es.client.query.SearchQuery
+
 interface ElasticSearchClient {
 
     Map<String, ?> index(IndexType indexType, String orgId, Object entity) throws IndexingException

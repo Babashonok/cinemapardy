@@ -76,13 +76,13 @@ class SnsServiceImpl implements SnsService {
         ListTopicsResult result = snsClient.listTopics()
         Topic topic = result.topics.find({
                     it -> getTopicName(it.topicArn).equals(topicName)
-                });
+                })
 
         while (!topic && result.nextToken) {
             result = snsClient.listTopics(result.nextToken)
             topic = result.topics.find({
                 it -> getTopicName(it.topicArn).equals(topicName)
-            });
+            })
         }
 
         return topic.topicArn

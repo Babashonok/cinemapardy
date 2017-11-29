@@ -5,6 +5,7 @@ import com.dev.babak.cinemapardy.view.CinemaView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,6 +22,7 @@ class CinemaController {
      CinemaService cinemaService
 
     @RequestMapping(value = "/get-all", method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:4200")
     ResponseEntity<List<CinemaView>> getDataExportFeeds() {
         return ResponseEntity.ok(cinemaService.getAllCinemas())
     }

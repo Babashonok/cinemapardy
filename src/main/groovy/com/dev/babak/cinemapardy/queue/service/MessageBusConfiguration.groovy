@@ -17,7 +17,7 @@ class MessageBusConfiguration {
 
     @Bean(name = "queueName")
     public String getAwsQueueName() {
-        return "https://sqs.us-east-1.amazonaws.com/877645874613/OrganizationQueue"
+        return "http://192.168.99.100:9600/queue1"
     }
 
     @Bean(name = "serviceRegion")
