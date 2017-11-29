@@ -3,6 +3,7 @@ package com.dev.babak.cinemapardy.controller
 import com.dev.babak.cinemapardy.service.CinemaService
 import com.dev.babak.cinemapardy.view.CinemaView
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -17,6 +18,8 @@ import javax.validation.Valid
 @RequestMapping('/cinema')
 @RestController
 class CinemaController {
+
+    private static final String uiUrl = "http://localhost:4200"
 
     @Autowired
      CinemaService cinemaService

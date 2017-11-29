@@ -4,6 +4,10 @@ import com.dev.babak.cinemapardy.domain.Cinema
 import com.dev.babak.cinemapardy.view.CinemaView
 import org.springframework.stereotype.Service
 
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+
 @Service
 class CinemaViewServiceImpl implements CinemaViewService{
 
@@ -14,11 +18,14 @@ class CinemaViewServiceImpl implements CinemaViewService{
             cinemas.each {
                 CinemaView cinemaView = new CinemaView(
                         id: it.id,
-                        title: it.title
+                        title: it.title,
+                        createdDate: LocalDateTime.ofInstant(it.createdDate, ZoneId.systemDefault()).toLocalDate(),
+                        director: it.director,
+                        imdbRank: it.imdbRank
+
                 )
                 cinemaViews.add(cinemaView)
             }
-
         }
         cinemaViews
     }
@@ -29,7 +36,10 @@ class CinemaViewServiceImpl implements CinemaViewService{
         if (cinemaView) {
             cinema = new Cinema(
                     id: cinemaView.id,
-                    title: cinemaView.title
+                    title: cinemaView.title,
+                    createdDate: cinemaView.createdDate.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                    director: cinemaView.director,
+                    imdbRank: cinemaView.imdbRank
             )
         }
         cinema

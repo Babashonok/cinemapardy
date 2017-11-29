@@ -27,9 +27,6 @@ class SnsServiceImpl implements SnsService {
 
     Map<String, String> topicToArnMapping
 
-    @Autowired
-    AWSCredentialsProvider credentialsProvider
-
     @Value('${docker.sns.endpoint}')
     private String endpoint
 
